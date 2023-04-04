@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +14,23 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.message-text {
+  word-break: break-all
+}
+
+.max-w-60 {
+  max-width: 60%;
+}
+
+.chat-window {
+  max-width: 1640px;
+}
+
+
+@media (min-width: 1440px) {
+  .chat-window {
+    padding: 20px;
+  }
 }
