@@ -68,7 +68,7 @@ function renderGame(
 
   if (game.type === "TICTACTOE") return (
     <div className={`my-2 rounded relative overflow-hidden ${isMine ? "ml-auto" : "mr-auto"}`} key={game.id}>
-        <div className={isMine ? " bg-orange-400/50" : " bg-zinc-400"}>
+        <div className={isMine ? " bg-orange-600/50" : " bg-zinc-900/60"}>
           <div className="p-2 flex flex-row flex-nowrap max-w-xs">
             <span className="font-bold overflow-hidden">
               {name}
