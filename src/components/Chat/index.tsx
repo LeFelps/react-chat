@@ -32,7 +32,7 @@ function renderGame(
 
     const value = (top ? "t" : bottom ? "b" : "c") + (left ? "l" : right ? "r" : "m");
     const movePlayed = moves.find(move => move.move === value);
-    const isMyPlay = movePlayed?.player === myId;
+    const isCross = movePlayed?.player === message.sender;
 
     return (
       <button type="button" className={"w-24 h-24 border-2 border-black" +
@@ -42,7 +42,7 @@ function renderGame(
         disabled={!!movePlayed || !amINext}
         onClick={() => makeMove({ gameId: game.id, player: myId, move: value })}
       >
-        {!!movePlayed ? isMyPlay ?
+        {!!movePlayed ? isCross ?
           <CloseIcon fontSize="large" />
           : <RadioButtonUncheckedIcon fontSize="large" />
           : ""}

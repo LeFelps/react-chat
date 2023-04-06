@@ -5,7 +5,7 @@ import Sidebar from "../Sidebar";
 import { Socket, io } from "socket.io-client";
 import { useState } from "react";
 
-const socket: Socket = io("https://chat-api-9cu8.onrender.com");
+const socket: Socket = io(process.env.REACT_APP_SOCKET_URL as string);
 
 const Interface = () => {
 
