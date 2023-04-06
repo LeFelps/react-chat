@@ -45,7 +45,7 @@ const Sidebar = ({ socket, isSearching, setIsSearching, partnerId, setPartnerId,
                 </span>
             </TopBar>
         </div>
-        <div className="flex flex-row bg-rose-900/5 text-white">
+        <div className="flex flex-row border-b-2 border-zinc-900 bg-orange-600/5 text-white">
             {isConnected ?
                 <div className="p-4 w-100 flex">
                     <IconButton color="error" aria-label="send"
