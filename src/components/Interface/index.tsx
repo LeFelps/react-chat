@@ -5,7 +5,7 @@ import Sidebar from "../Sidebar";
 import { Socket, io } from "socket.io-client";
 import { useState } from "react";
 
-const socket: Socket = io("http://localhost:5000");
+const socket: Socket = io("https://chat-api-9cu8.onrender.com:10000");
 
 const Interface = () => {
 
