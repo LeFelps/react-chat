@@ -1,4 +1,4 @@
-import { Message } from "./types";
+import { Message } from "../types";
 
 const MessageBubble = ({ message, isMine, ...props }: { message: Message, isMine: boolean, props?: any }) => {
     return (

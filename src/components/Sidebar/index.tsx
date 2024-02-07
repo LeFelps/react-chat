@@ -15,7 +15,7 @@ const Sidebar = ({ socket, isSearching, setIsSearching, partnerId, setPartnerId,
         setPartnerId: (partnerId: string) => void,
         isConnected: boolean,
         setIsConnected: (isConnected: boolean) => void
-    }) => {
+    }) => {        
 
     function startSearch() {
         socket.emit("startSearch", (response: { status: string }) => {
