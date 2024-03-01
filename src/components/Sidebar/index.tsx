@@ -1,21 +1,14 @@
-import { Socket } from "socket.io-client";
 import LinearProgress from '@mui/material/LinearProgress';
 import TopBar from "../Interface/TopBar";
 import IconButton from '@mui/material/IconButton'
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import SensorsOffIcon from '@mui/icons-material/SensorsOff';
+import { interfaceProps } from "../Chat/types";
 
-const Sidebar = ({ socket, isSearching, setIsSearching, partnerId, setPartnerId, isConnected, setIsConnected }:
-    {
-        socket: Socket,
-        isSearching: boolean,
-        setIsSearching: (isSearching: boolean) => void,
-        partnerId: string,
-        setPartnerId: (partnerId: string) => void,
-        isConnected: boolean,
-        setIsConnected: (isConnected: boolean) => void
-    }) => {        
+const Sidebar = ({ socket, isSearching, setIsSearching, user, setUser, isConnected, setIsConnected }:
+    interfaceProps
+) => {
 
     function startSearch() {
         socket.emit("startSearch", (response: { status: string }) => {
@@ -41,7 +34,7 @@ const Sidebar = ({ socket, isSearching, setIsSearching, partnerId, setPartnerId,
         <div className="border-r-2 border-zinc-900">
             <TopBar>
                 <span className="text-lg text-white self-center mx-auto font-bold">
-                    Whatsapp 2
+                    {user.name}
                 </span>
             </TopBar>
         </div>

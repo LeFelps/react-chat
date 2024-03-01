@@ -1,6 +1,7 @@
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CloseIcon from '@mui/icons-material/Close';
 import { useGame } from '../Context';
+import { useEffect, useState } from 'react';
 
 const Block = ({ top, bottom, left, right }: {
     top?: boolean,
@@ -47,9 +48,72 @@ const BlockRow = ({ top, bottom }: {
     )
 }
 
-function TicTacToe() {
+function GameOverScreen({ myWin }: { myWin: boolean }) {
 
-    const { game: { id }, isMine, name } = useGame();
+    const message = myWin ? "You Win!" : "You Lose!"
+
+    return (
+        <div className='w-48 flex justify-center py-4 bg-white/25 rounded'>
+            <span className='text-xl text-white font-bold'>
+                {message}
+            </span>
+        </div>
+    )
+}
+
+export default function TicTacToe() {
+
+    const { game: { id }, isMine, myId, name, moves } = useGame();
+    type moveTypes = "tl" | "tm" | "tr" | "cl" | "cm" | "cr" | "bl" | "bm" | "br"
+
+    const [winner, setWinner] = useState<string | undefined>()
+
+
+    useEffect(() => {
+
+        function isGameOver() {
+
+            const winConditions: moveTypes[][] = [
+                ["tl", "tm", "tr"],
+                ["cl", "cm", "cr"],
+                ["bl", "bm", "br"],
+                ["tl", "cl", "bl"],
+                ["tl", "cl", "bl"],
+                ["tm", "cm", "bm"],
+                ["tr", "cr", "br"],
+                ["tl", "cm", "br"],
+                ["tr", "cm", "bl"],
+            ]
+
+            const movesMade = {
+                "tl": moves.find(m => m.move === "tl"),
+                "tm": moves.find(m => m.move === "tm"),
+                "tr": moves.find(m => m.move === "tr"),
+                "cl": moves.find(m => m.move === "cl"),
+                "cm": moves.find(m => m.move === "cm"),
+                "cr": moves.find(m => m.move === "cr"),
+                "bl": moves.find(m => m.move === "bl"),
+                "bm": moves.find(m => m.move === "bm"),
+                "br": moves.find(m => m.move === "br")
+            }
+
+            let result = null
+
+            winConditions.map((wc) => {
+                const [wcm1, wcm2, wcm3]: moveTypes[] = [...wc]
+                const [m1, m2, m3] = [movesMade[wcm1]?.player, movesMade[wcm2]?.player, movesMade[wcm3]?.player]
+                if (m1 === m2 && m2 === m3) result = m1
+                return m1
+            })
+
+            return result
+        }
+
+        const winner = isGameOver()
+
+        if (winner) setWinner(winner)
+
+    }, [moves])
 
     return (
         <div className={`my-2 rounded relative overflow-hidden ${isMine ? "ml-auto" : "mr-auto"}`} key={id}>
@@ -59,15 +123,16 @@ function TicTacToe() {
                         {name}
                     </span>
                 </div>
-                <div className="p-2 flex flex-col bg-white/25 rounded">
-                    <BlockRow top />
-                    <BlockRow />
-                    <BlockRow bottom />
-                </div>
+                {winner ?
+                    <GameOverScreen myWin={winner === myId} />
+                    : <div className="p-2 flex flex-col bg-white/25 rounded">
+                        <BlockRow top />
+                        <BlockRow />
+                        <BlockRow bottom />
+                    </div>
+                }
             </div>
         </div>
     )
-}
-
-export default TicTacToe;
+};
 

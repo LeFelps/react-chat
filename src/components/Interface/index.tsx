@@ -4,21 +4,31 @@ import ChatScreen from "../Chat";
 import Sidebar from "../Sidebar";
 import { Socket, io } from "socket.io-client";
 import { useState } from "react";
+import { User, interfaceProps } from "../Chat/types";
 
 const socket: Socket = io(process.env.REACT_APP_SOCKET_URL as string);
 
 const Interface = () => {
 
-    const [partnerId, setPartnerId] = useState<string>("");
+    const [partner, setPartner] = useState<User>();
+
+    const [user, setUser] = useState<User>({
+        id: "",
+        name: "",
+        socketId: ""
+    });
+
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [isConnected, setIsConnected] = useState<boolean>(false);
 
-    const interfaceProps = {
+    const interfaceProps: interfaceProps = {
         socket: socket,
         isSearching: isSearching,
         setIsSearching: setIsSearching,
-        partnerId: partnerId,
-        setPartnerId: setPartnerId,
+        user: user,
+        setUser: setUser,
+        partner: partner,
+        setPartner: setPartner,
         isConnected: isConnected,
         setIsConnected: setIsConnected
     }

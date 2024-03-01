@@ -1,40 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Socket } from "socket.io-client";
 import TextField from '@mui/material/TextField';
 import { IconButton } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import { Message } from "./types";
+import { Message, interfaceProps } from "./types";
 import MessageBubble from "./Message";
 import TopBar from "../Interface/TopBar";
 import SensorsIcon from '@mui/icons-material/Sensors';
 import GameBubble from "./Game";
 
-const ChatScreen = ({ socket, isSearching, setIsSearching, partnerId, setPartnerId, isConnected, setIsConnected }:
-  {
-    socket: Socket,
-    isSearching: boolean,
-    setIsSearching: (isSearching: boolean) => void,
-    partnerId: string,
-    setPartnerId: (partnerId: string) => void,
-    isConnected: boolean,
-    setIsConnected: (isConnected: boolean) => void
-  }) => {
+const ChatScreen = ({ socket, isSearching, setIsSearching, user, setUser, partner, setPartner, isConnected, setIsConnected }:
+  interfaceProps
+) => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [gameMoves, setGameMoves] = useState<{ gameId: string, player: string, move: string }[]>([]);
   const [gamesImNext, setGamesImNext] = useState<string[]>([]);
-
-  type User = {
-    id: string;
-    name: string;
-    socketId: string;
-  }
-
-  const [user, setUser] = useState<User>({
-    id: "",
-    name: "",
-    socketId: ""
-  });
 
   const [message, setMessage] = useState<string>("");
 
@@ -69,9 +49,9 @@ const ChatScreen = ({ socket, isSearching, setIsSearching, partnerId, setPartner
 
 
   useEffect(() => {
-    socket.on("chatConnected", ({ chatRoomId, partnerId }) => {
+    socket.on("chatConnected", ({ chatRoomId, partner }) => {
       setCurrentChatRoomId(chatRoomId);
-      setPartnerId(partnerId);
+      setPartner(partner);
       setIsSearching(false);
       setIsConnected(true);
     });
@@ -79,7 +59,7 @@ const ChatScreen = ({ socket, isSearching, setIsSearching, partnerId, setPartner
     socket.on("chatEnded", () => {
       setIsConnected(false);
       setIsSearching(false);
-      setPartnerId("");
+      setPartner();
       setCurrentChatRoomId("");
       setMessages([]);
     });
@@ -114,12 +94,22 @@ const ChatScreen = ({ socket, isSearching, setIsSearching, partnerId, setPartner
     scrollToBottom();
   }, [messages]);
 
+  function getTalkingToString(name: string) {
+    const firstLetter = name.toLocaleLowerCase()[0]
+    const article = firstLetter === 'a' ||
+      firstLetter === 'e' ||
+      firstLetter === 'i' ||
+      firstLetter === 'o' ||
+      firstLetter === 'u' ? "an" : "a"
+    return `Talking to ${article} ${name}`
+  }
+
   return (
     <div className="flex flex-col h-full">
       <TopBar>
         <span className="text-lg text-white self-center mx-auto ">
-          {partnerId !== "" ?
-            `Talking to user ${partnerId}`
+          {partner ?
+            getTalkingToString(partner.name)
             : isSearching ? "Waiting for connection..." : "Not currently chatting"}
         </span>
       </TopBar>
